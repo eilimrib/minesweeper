@@ -68,15 +68,31 @@ int main(){
                             } else{
                                 std::cout << lvl[pos.x][pos.y].getIsFound() << ": already found!!" << std::endl;
                             }
-                            level.updateLevel(lvl);
                         }
                     } else{
                         if (event.mouseButton.button == sf::Mouse::Right) {
-                            lvl[pos.x][pos.y].setFlag();
-                            level.updateLevel(lvl);
+                            if(!lvl[pos.x][pos.y].getIsFound()){
+                                if(!lvl[pos.x][pos.y].getIsFlagged()){
+                                    level.addFlag();
+                                    if(lvl[pos.x][pos.y].getIsBomb()){
+                                        level.addCorrectFlag();
+                                    }
+                                } else{
+                                    level.removeFlag();
+                                    if(lvl[pos.x][pos.y].getIsBomb()){
+                                        level.removeCorrectFlag();
+                                    }
+                                }
+                                lvl[pos.x][pos.y].setFlag();
+                                if(level.checkWin()){
+                                    std::cout << "You won!!" << std::endl;
+                                    window.close();
+                                }
+                            }
                         }
 
                     }
+                    level.updateLevel(lvl);
                     window.clear();
                     level.draw(window);
                     window.display();

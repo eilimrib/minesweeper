@@ -9,10 +9,17 @@ class Level {
         Level();
         void generate(int rows, int cols, int bomb_count);
         void draw(sf::RenderWindow &window);
+        bool checkWin();
         inline std::vector<std::vector<Tile>> getLevel() { return lvl; }
         void inline updateLevel(std::vector<std::vector<Tile>> level) { lvl = level; }
+        void inline addFlag() { totalFlags++; }
+        void inline addCorrectFlag() { correctFlags++; }
+        void inline removeCorrectFlag() { correctFlags--; }
+        void inline removeFlag() { totalFlags--; }
     private:
         void initIntRect();
+        int totalFlags;
+        int correctFlags;
         std::vector<std::vector<Tile>> lvl;
 
         sf::Texture tileSheet;

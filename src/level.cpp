@@ -4,9 +4,13 @@
 #include "SFML/Graphics.hpp"
 #include <random>
 #include <iostream>
+#include <algorithm>
+#include <vector>
 
 
 Level::Level() {
+    totalFlags = 0;
+    correctFlags = 0;
     generate(ROWS, COLUMNS, NUM_MINES);
     if(!tileSheet.loadFromFile("assets/tiles.png")){
         std::cout << "Could not load \"tiles.png\"!" << std::endl;
@@ -18,54 +22,56 @@ Level::Level() {
 
 
 void Level::generate(int rows, int cols, int bomb_count){
-    int start, num, curRow = 0;
+    int start = 0;
+    int curCol = 0;
+    int curRow = 0;
     int end = rows * cols;
 
     // 1D Vector for bombs
     std::vector<int> v(end);
-    std::iota(v.begin(), v.end(), start);
+    std::iota(v.begin(), v.end(), 0);
 
     // Random shuffle for bombs
-    auto rng = std::default_random_engine {};
-    std::shuffle(std::begin(v), std::end(v), rng);
+
+    std::shuffle(v.begin(), v.end(), std::mt19937{std::random_device{}()});
 
     // Initialize level
     std::vector<std::vector<Tile>> level(rows, std::vector<Tile> (cols, Tile()));
 
     for(int i = 0; i < bomb_count; i++){
-        num = v.back();
-
+        curRow = v.back();
         // Convert 1D pos to 2D
-        while(num > rows){ 
-            num = num % cols;
-            curRow++;
+        if(curRow > rows-1){
+            curCol = curRow / rows;
+            curRow = curRow % rows;
+            std::cout << "row: " << curRow+1 << " col: " << curCol+1 << std::endl;
         }
-        level[curRow][num].addBomb();
+        level[curRow][curCol].addBomb();
 
         // Test out of bounds
-        if(curRow < rows){
-            level[curRow+1][num].addBombNear();
+        if(curRow < rows-1){
+            level[curRow+1][curCol].addBombNear();
         }
         if(curRow-1 >= 0){
-            level[curRow-1][num].addBombNear();
+            level[curRow-1][curCol].addBombNear();
         }
-        if(num < cols){
-            level[curRow][num+1].addBombNear();
+        if(curCol < cols-1){
+            level[curRow][curCol+1].addBombNear();
         }
-        if(num-1 >= 0){
-            level[curRow][num-1].addBombNear();
+        if(curCol-1 >= 0){
+            level[curRow][curCol-1].addBombNear();
         }
-        if(curRow < rows and num < cols){
-            level[curRow+1][num+1].addBombNear();
+        if(curRow < rows-1 and curCol < cols-1){
+            level[curRow+1][curCol+1].addBombNear();
         }
-        if(curRow < rows and num-1 >=0){
-            level[curRow+1][num-1].addBombNear();
+        if(curRow < rows-1 and curCol-1 >=0){
+            level[curRow+1][curCol-1].addBombNear();
         }
-        if(curRow-1 >= 0 and num < cols){
-            level[curRow-1][num+1].addBombNear();
+        if(curRow-1 >= 0 and curCol < cols-1){
+            level[curRow-1][curCol+1].addBombNear();
         }
-        if(curRow-1 >= 0 and num-1>=0){
-            level[curRow-1][num-1].addBombNear();
+        if(curRow-1 >= 0 and curCol-1>=0){
+            level[curRow-1][curCol-1].addBombNear();
         }
    
         v.pop_back();
@@ -80,6 +86,7 @@ void Level::draw(sf::RenderWindow &window) {
     sf::IntRect placeHolder;
     bool found;
     bool flagged;
+    bool isBomb;
     int numBombs;
 
     
@@ -118,6 +125,14 @@ void Level::draw(sf::RenderWindow &window) {
             window.draw(sprite);
         }
     }
+}
+
+bool Level::checkWin(){
+    if(correctFlags == totalFlags and correctFlags == NUM_MINES){
+        return true;
+    }
+    std::cout << totalFlags << " total flags and " << correctFlags << " correct flags" << std::endl;
+    return false;
 }
 
 void Level::initIntRect(){

@@ -9,9 +9,9 @@ class Tile{
         inline int getNumBombs() { return bombsNear; }
         
         inline void setFlag() { flagged = !flagged; }
-        inline void setFound() { found = true; }
+        inline void setFound() { if(!isBomb) { found = true; }}
         inline void addBombNear() { if(!isBomb){ bombsNear++;} }
-        inline void addBomb() { isBomb = true; bombsNear = 0;}
+        inline void addBomb() { isBomb = true; }
     private:
         bool isBomb;
         bool found;
