@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include "include/defaults.hpp"
 #include "include/level.hpp"
+#include "include/tile.hpp"
 #include <iostream>
 
 int main(){
@@ -9,6 +10,7 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(SCREEN_HEIGHT, SCREEN_WIDTH), "Minesweeper");
 
     Level level = Level();
+    std::vector<std::vector<Tile>> lvl = level.getLevel();
 
     while(window.isOpen()) {
 
@@ -22,18 +24,21 @@ int main(){
                     window.close();
                     break;
 
-                case sf::Event::MouseButtonPressed:
-                    pos.x = event.mouseButton.x;
-                    pos.y = event.mouseButton.y;
+                case sf::Event::MouseButtonReleased:
+                    pos.x = (event.mouseButton.x - event.mouseButton.x % TILE_WIDTH)/ COLUMNS;
+                    pos.y = (event.mouseButton.y - event.mouseButton.y % TILE_HEIGHT)/ ROWS;
                     if (event.mouseButton.button == sf::Mouse::Left) {
                         std::cout << "left pressed" << std::endl;
                         std::cout << "x: " << pos.x << " y: " << pos.y << std::endl;
+
+                        if(lvl[pos.x][pos.y].getIsBomb()){
+                            std::cout << "Sprite has bomb!!" << std::endl;
+                        }
                     }
-
-
                     break;
             }
         }
+
         window.clear();
         level.draw(window);
         window.display();

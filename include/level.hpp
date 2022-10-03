@@ -14,6 +14,9 @@ class Level {
         void initIntRect();
         std::vector<std::vector<Tile>> level;
 
+        sf::Texture tileSheet;
+        sf::Sprite sprite;
+
         sf::IntRect hidden;
         sf::IntRect blank;
         sf::IntRect bomb;

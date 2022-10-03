@@ -8,6 +8,11 @@
 
 Level::Level() {
     generate(ROWS, COLUMNS, NUM_MINES);
+    if(!tileSheet.loadFromFile("assets/tiles.png")){
+        std::cout << "Could not load \"tiles.png\"!" << std::endl;
+    }
+
+    sprite.setTexture(tileSheet);
 }
 
 
@@ -29,11 +34,14 @@ void Level::generate(int rows, int cols, int bomb_count){
     for(int i = bomb_count; i >= 0; i--){
         num = v.back();
 
+        // Convert 1D pos to 2D
         while(num > rows){ 
             num = num % cols;
             curRow++;
         }
         lvl[curRow][num].addBomb();
+
+        // Test out of bounds
         if(curRow < rows){
             lvl[curRow+1][num].addBombNear();
         }
@@ -46,7 +54,19 @@ void Level::generate(int rows, int cols, int bomb_count){
         if(num-1 >= 0){
             lvl[curRow][num-1].addBombNear();
         }
-        
+        if(curRow < rows and num < cols){
+            lvl[curRow+1][num+1].addBombNear();
+        }
+        if(curRow < rows and num-1 >=0){
+            lvl[curRow+1][num-1].addBombNear();
+        }
+        if(curRow-1 >= 0 and num < cols){
+            lvl[curRow-1][num+1].addBombNear();
+        }
+        if(curRow-1 >= 0 and num-1>=0){
+            lvl[curRow-1][num-1].addBombNear();
+        }
+   
         v.pop_back();
     }
 
@@ -58,7 +78,6 @@ void Level::generate(int rows, int cols, int bomb_count){
 void Level::draw(sf::RenderWindow &window) {
     const int mapRows = ROWS;
     const int mapColumns = COLUMNS;
-    sf::Sprite sprite; 
     sf::IntRect placeHolder;
     
    	for (int row = 0; row < mapRows; row++) {
@@ -88,9 +107,12 @@ void Level::draw(sf::RenderWindow &window) {
                 placeHolder = hidden;
             }
 
-            level[row][column].setRect(placeHolder);
-			level[row][column].setPos((row * TILE_WIDTH), (column * TILE_HEIGHT));
-			level[row][column].drawSprite(window);
+            sprite.setTextureRect(placeHolder);
+			sprite.setPosition((row * TILE_WIDTH), (column * TILE_HEIGHT));
+            // Save coords for later
+            level[row][column].setCoords((row * TILE_WIDTH), (column * TILE_HEIGHT));
+
+            window.draw(sprite);
         }
     }
 }
