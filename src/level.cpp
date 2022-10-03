@@ -77,41 +77,39 @@ void Level::generate(int rows, int cols, int bomb_count){
 
 
 void Level::draw(sf::RenderWindow &window) {
-    const int mapRows = ROWS;
-    const int mapColumns = COLUMNS;
     sf::IntRect placeHolder;
-    bool found = false;
-    bool flagged = false;
-    int numBombs = 0;
+    bool found;
+    bool flagged;
+    int numBombs;
 
     
-   	for (int row = 0; row < mapRows; row++) {
-        for (int column = 0; column < mapColumns; column++) {
+   	for (int row = 0; row < ROWS; row++) {
+        for (int column = 0; column < COLUMNS; column++) {
             found = level[row][column].getIsFound();
-            if(found){
+            if(!found){
                 numBombs = level[row][column].getNumBombs();
                 switch(numBombs){
-                        case 0:
-                            placeHolder = blank;
-                            break;
-                        case 1:
-                            placeHolder = one;
-                            break;
-                        case 2:
-                            placeHolder = two;
-                            break;
-                        case 3:
-                            placeHolder = three;
-                            break;
-                        case 4:
-                            placeHolder = four;
-                    }
+                    case 0:
+                        placeHolder = blank;
+                        break;
+                    case 1:
+                        placeHolder = one;
+                        break;
+                    case 2:
+                        placeHolder = two;
+                        break;
+                    case 3:
+                        placeHolder = three;
+                        break;
+                    case 4:
+                        placeHolder = four;
+                }
+            } else {
+                flagged = level[row][column].getIsFlagged();
+                if(flagged) {
+                    placeHolder = flag;
                 } else {
-                    flagged = level[row][column].getIsFlagged();
-                    if(flagged) {
-                        placeHolder = flag;
-                    } else {
-                        placeHolder = hidden;
+                    placeHolder = hidden;
                 }
             }
 

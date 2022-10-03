@@ -37,40 +37,44 @@ int main(){
                             std::cout << "You died!!" << std::endl;
                             window.close();
                         } else {
-                            std::cout << "Nothing here!!" << std::endl;
-                            std::cout << lvl[pos.x][pos.y].getNumBombs() << " bombs near!" << std::endl;
-                            lvl[pos.x][pos.y].setFound();
-                            if(pos.x < ROWS){
-                                lvl[pos.x+1][pos.y].setFound();
-                            }
-                            if(pos.x-1 >= 0){
-                                lvl[pos.x-1][pos.y].setFound();
-                            }
-                            if(pos.y < COLUMNS){
-                                lvl[pos.x][pos.y+1].setFound();
-                            }
-                            if(pos.y-1 >=0){
-                                lvl[pos.x][pos.y-1].setFound();
-                            }
-                            if(pos.x < ROWS and pos.y < COLUMNS){
-                                lvl[pos.x+1][pos.y+1].setFound();
-                            }
-                            if(pos.x < ROWS and pos.y-1 >= 0){
-                                lvl[pos.x+1][pos.y-1].setFound();
-                            }
-                            if(pos.x-1 >= 0 and pos.y < COLUMNS){
-                                lvl[pos.x-1][pos.y+1].setFound();
-                            }
-                            if(pos.x-1 >=0 and pos.y-1 >= 0){
-                                lvl[pos.x-1][pos.y-1].setFound();
+                            if(!lvl[pos.x][pos.y].getIsFound()){
+                                std::cout << lvl[pos.x][pos.y].getIsFound() << ": nothing here!!" << std::endl;
+                                std::cout << lvl[pos.x][pos.y].getNumBombs() << " bombs near!" << std::endl;
+                                lvl[pos.x][pos.y].setFound();
+                                if(pos.x < ROWS-1){
+                                    lvl[pos.x+1][pos.y].setFound();
+                                }
+                                if(pos.x-1 >= 0){
+                                    lvl[pos.x-1][pos.y].setFound();
+                                }
+                                if(pos.y < COLUMNS-1){
+                                    lvl[pos.x][pos.y+1].setFound();
+                                }
+                                if(pos.y-1 >=0){
+                                    lvl[pos.x][pos.y-1].setFound();
+                                }
+                                if(pos.x < ROWS-1 and pos.y < COLUMNS-1){
+                                    lvl[pos.x+1][pos.y+1].setFound();
+                                }
+                                if(pos.x < ROWS-1 and pos.y-1 >= 0){
+                                    lvl[pos.x+1][pos.y-1].setFound();
+                                }
+                                if(pos.x-1 >= 0 and pos.y < COLUMNS-1){
+                                    lvl[pos.x-1][pos.y+1].setFound();
+                                }
+                                if(pos.x-1 >=0 and pos.y-1 >= 0){
+                                    lvl[pos.x-1][pos.y-1].setFound();
+                                }
+                            } else{
+                                std::cout << lvl[pos.x][pos.y].getIsFound() << ": already found!!" << std::endl;
                             }
                         }
                     }
+                    window.clear();
+                    level.draw(window);
+                    window.display();
                     break;
             }
         }
-        window.clear();
-        level.draw(window);
-        window.display();
     }
 }
