@@ -66,11 +66,11 @@ int main(){
                             }
                         }
                     }
-                    window.clear();
-                    level.draw(window);
-                    window.display();
                     break;
             }
         }
+        window.clear();
+        level.draw(window);
+        window.display();
     }
 }

@@ -80,11 +80,17 @@ void Level::draw(sf::RenderWindow &window) {
     const int mapRows = ROWS;
     const int mapColumns = COLUMNS;
     sf::IntRect placeHolder;
+    bool found = false;
+    bool flagged = false;
+    int numBombs = 0;
+
     
    	for (int row = 0; row < mapRows; row++) {
         for (int column = 0; column < mapColumns; column++) {
-            if(level[row][column].getIsFound()){
-                switch(level[row][column].getNumBombs()){
+            found = level[row][column].getIsFound();
+            if(found){
+                numBombs = level[row][column].getNumBombs();
+                switch(numBombs){
                         case 0:
                             placeHolder = blank;
                             break;
@@ -101,7 +107,8 @@ void Level::draw(sf::RenderWindow &window) {
                             placeHolder = four;
                     }
                 } else {
-                    if(level[row][column].getIsFlagged()) {
+                    flagged = level[row][column].getIsFlagged();
+                    if(flagged) {
                         placeHolder = flag;
                     } else {
                         placeHolder = hidden;
