@@ -3,6 +3,8 @@
 #include "../include/defaults.hpp"
 #include "SFML/Graphics.hpp"
 #include <random>
+#include <iostream>
+
 
 Level::Level() {
     generate(ROWS, COLUMNS, NUM_MINES);
@@ -50,3 +52,87 @@ void Level::generate(int rows, int cols, int bomb_count){
 
     level = lvl;
 } 
+
+
+
+void Level::draw(sf::RenderWindow &window) {
+    const int mapRows = ROWS;
+    const int mapColumns = COLUMNS;
+    sf::Sprite sprite; 
+    sf::IntRect placeHolder;
+    
+   	for (int row = 0; row < mapRows; row++) {
+		for (int column = 0; column < mapColumns; column++) {
+            if(level[row][column].getIsFound()){
+                if(level[row][column].getIsFlagged()){
+                    placeHolder = flag;
+                }else {
+                    switch(level[row][column].getNumBombs()){
+                        case 0:
+                            placeHolder = blank;
+                            break;
+                        case 1:
+                            placeHolder = one;
+                            break;
+                        case 2:
+                            placeHolder = two;
+                            break;
+                        case 3:
+                            placeHolder = three;
+                            break;
+                        case 4:
+                            placeHolder = four;
+                    }
+                }
+            } else {
+                placeHolder = hidden;
+            }
+
+            level[row][column].setRect(placeHolder);
+			level[row][column].setPos((row * TILE_WIDTH), (column * TILE_HEIGHT));
+			level[row][column].drawSprite(window);
+        }
+    }
+}
+
+void Level::initIntRect(){
+	hidden.left = 0;
+	hidden.top = 0;
+	hidden.width = TILE_WIDTH;
+	hidden.height = TILE_HEIGHT;
+
+	blank.left = 30;
+	blank.top = 0;
+	blank.width = TILE_WIDTH;
+	blank.height = TILE_HEIGHT;
+
+	bomb.left = 0;
+	bomb.top = 30;
+	bomb.width = TILE_WIDTH;
+	bomb.height = TILE_HEIGHT;
+
+	flag.left = 30;
+	flag.top = 30;
+	flag.width = TILE_WIDTH;
+	flag.height = TILE_HEIGHT;
+
+    one.left = 60;
+    one.top = 0;
+    one.width = TILE_WIDTH;
+    one.height = TILE_HEIGHT;
+
+    two.left = 90;
+    two.top = 0;
+    two.width = TILE_WIDTH;
+    two.height = TILE_HEIGHT;
+
+    three.left = 60;
+    three.top = 30;
+    three.width = TILE_WIDTH;
+    three.height = TILE_HEIGHT;
+
+    four.left = 90;
+    four.top = 30;
+    four.width = TILE_WIDTH;
+    four.height = TILE_HEIGHT;    
+}
