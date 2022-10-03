@@ -21,9 +21,9 @@ int main(){
                     window.close();
                     break;
             }
-
         }
-
+        window.clear();
         map.draw(window, lvl);
+        window.display();
     }
 }
