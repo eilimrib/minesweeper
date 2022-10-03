@@ -12,6 +12,8 @@ int main(){
     Level level = Level();
     std::vector<std::vector<Tile>> lvl = level.getLevel();
 
+    level.draw(window);
+    window.display();
     while(window.isOpen()) {
 
         sf::Event event;
@@ -32,15 +34,18 @@ int main(){
                         std::cout << "x: " << pos.x << " y: " << pos.y << std::endl;
 
                         if(lvl[pos.x][pos.y].getIsBomb()){
-                            std::cout << "Sprite has bomb!!" << std::endl;
+                            std::cout << "You died!!" << std::endl;
+                            window.close();
+                        } else {
+                            std::cout << "Nothing here!!" << std::endl;
+                            lvl[pos.x][pos.y].setFound();
                         }
                     }
+                    window.clear();
+                    level.draw(window);
+                    window.display();
                     break;
             }
         }
-
-        window.clear();
-        level.draw(window);
-        window.display();
     }
 }

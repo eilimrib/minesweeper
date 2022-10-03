@@ -13,6 +13,7 @@ Level::Level() {
     }
 
     sprite.setTexture(tileSheet);
+    initIntRect();
 }
 
 
@@ -81,7 +82,7 @@ void Level::draw(sf::RenderWindow &window) {
     sf::IntRect placeHolder;
     
    	for (int row = 0; row < mapRows; row++) {
-		for (int column = 0; column < mapColumns; column++) {
+        for (int column = 0; column < mapColumns; column++) {
             if(level[row][column].getIsFound()){
                 if(level[row][column].getIsFlagged()){
                     placeHolder = flag;
@@ -108,7 +109,7 @@ void Level::draw(sf::RenderWindow &window) {
             }
 
             sprite.setTextureRect(placeHolder);
-			sprite.setPosition((row * TILE_WIDTH), (column * TILE_HEIGHT));
+            sprite.setPosition((row * TILE_WIDTH), (column * TILE_HEIGHT));
             // Save coords for later
             level[row][column].setCoords((row * TILE_WIDTH), (column * TILE_HEIGHT));
 
@@ -118,25 +119,25 @@ void Level::draw(sf::RenderWindow &window) {
 }
 
 void Level::initIntRect(){
-	hidden.left = 0;
-	hidden.top = 0;
-	hidden.width = TILE_WIDTH;
-	hidden.height = TILE_HEIGHT;
+    hidden.left = 0;
+    hidden.top = 0;
+    hidden.width = TILE_WIDTH;
+    hidden.height = TILE_HEIGHT;
 
-	blank.left = 30;
-	blank.top = 0;
-	blank.width = TILE_WIDTH;
-	blank.height = TILE_HEIGHT;
+    blank.left = 30;
+    blank.top = 0;
+    blank.width = TILE_WIDTH;
+    blank.height = TILE_HEIGHT;
 
-	bomb.left = 0;
-	bomb.top = 30;
-	bomb.width = TILE_WIDTH;
-	bomb.height = TILE_HEIGHT;
+    bomb.left = 0;
+    bomb.top = 30;
+    bomb.width = TILE_WIDTH;
+    bomb.height = TILE_HEIGHT;
 
-	flag.left = 30;
-	flag.top = 30;
-	flag.width = TILE_WIDTH;
-	flag.height = TILE_HEIGHT;
+    flag.left = 30;
+    flag.top = 30;
+    flag.width = TILE_WIDTH;
+    flag.height = TILE_HEIGHT;
 
     one.left = 60;
     one.top = 0;

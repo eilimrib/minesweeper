@@ -9,6 +9,7 @@ class Tile{
         inline int getNumBombs() { return bombsNear; }
         
         inline void setFlag() { flagged = !flagged; }
+        inline void setFound() { found = true; }
         inline void addBombNear() { bombsNear++; }
         inline void addBomb() { isBomb = true; }
         inline void setCoords(int x, int y) { coords.x = x; coords.y = y; }
