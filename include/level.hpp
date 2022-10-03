@@ -9,10 +9,11 @@ class Level {
         Level();
         void generate(int rows, int cols, int bomb_count);
         void draw(sf::RenderWindow &window);
-        inline std::vector<std::vector<Tile>> getLevel() { return level; }
+        inline std::vector<std::vector<Tile>> getLevel() { return lvl; }
+        void inline updateLevel(std::vector<std::vector<Tile>> level) { lvl = level; }
     private:
         void initIntRect();
-        std::vector<std::vector<Tile>> level;
+        std::vector<std::vector<Tile>> lvl;
 
         sf::Texture tileSheet;
         sf::Sprite sprite;

@@ -68,7 +68,14 @@ int main(){
                             } else{
                                 std::cout << lvl[pos.x][pos.y].getIsFound() << ": already found!!" << std::endl;
                             }
+                            level.updateLevel(lvl);
                         }
+                    } else{
+                        if (event.mouseButton.button == sf::Mouse::Right) {
+                            lvl[pos.x][pos.y].setFlag();
+                            level.updateLevel(lvl);
+                        }
+
                     }
                     window.clear();
                     level.draw(window);

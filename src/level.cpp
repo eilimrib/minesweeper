@@ -30,9 +30,9 @@ void Level::generate(int rows, int cols, int bomb_count){
     std::shuffle(std::begin(v), std::end(v), rng);
 
     // Initialize level
-    std::vector<std::vector<Tile>> lvl(rows, std::vector<Tile> (cols, Tile()));
+    std::vector<std::vector<Tile>> level(rows, std::vector<Tile> (cols, Tile()));
 
-    for(int i = bomb_count; i >= 0; i--){
+    for(int i = 0; i < bomb_count; i++){
         num = v.back();
 
         // Convert 1D pos to 2D
@@ -40,38 +40,38 @@ void Level::generate(int rows, int cols, int bomb_count){
             num = num % cols;
             curRow++;
         }
-        lvl[curRow][num].addBomb();
+        level[curRow][num].addBomb();
 
         // Test out of bounds
         if(curRow < rows){
-            lvl[curRow+1][num].addBombNear();
+            level[curRow+1][num].addBombNear();
         }
         if(curRow-1 >= 0){
-            lvl[curRow-1][num].addBombNear();
+            level[curRow-1][num].addBombNear();
         }
         if(num < cols){
-            lvl[curRow][num+1].addBombNear();
+            level[curRow][num+1].addBombNear();
         }
         if(num-1 >= 0){
-            lvl[curRow][num-1].addBombNear();
+            level[curRow][num-1].addBombNear();
         }
         if(curRow < rows and num < cols){
-            lvl[curRow+1][num+1].addBombNear();
+            level[curRow+1][num+1].addBombNear();
         }
         if(curRow < rows and num-1 >=0){
-            lvl[curRow+1][num-1].addBombNear();
+            level[curRow+1][num-1].addBombNear();
         }
         if(curRow-1 >= 0 and num < cols){
-            lvl[curRow-1][num+1].addBombNear();
+            level[curRow-1][num+1].addBombNear();
         }
         if(curRow-1 >= 0 and num-1>=0){
-            lvl[curRow-1][num-1].addBombNear();
+            level[curRow-1][num-1].addBombNear();
         }
    
         v.pop_back();
     }
 
-    level = lvl;
+    lvl = level;
 } 
 
 
@@ -83,11 +83,11 @@ void Level::draw(sf::RenderWindow &window) {
     int numBombs;
 
     
-   	for (int row = 0; row < ROWS; row++) {
+    for (int row = 0; row < ROWS; row++) {
         for (int column = 0; column < COLUMNS; column++) {
-            found = level[row][column].getIsFound();
-            if(!found){
-                numBombs = level[row][column].getNumBombs();
+            found = lvl[row][column].getIsFound();
+            if(found){
+                numBombs = lvl[row][column].getNumBombs();
                 switch(numBombs){
                     case 0:
                         placeHolder = blank;
@@ -105,7 +105,7 @@ void Level::draw(sf::RenderWindow &window) {
                         placeHolder = four;
                 }
             } else {
-                flagged = level[row][column].getIsFlagged();
+                flagged = lvl[row][column].getIsFlagged();
                 if(flagged) {
                     placeHolder = flag;
                 } else {
