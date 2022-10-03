@@ -84,10 +84,7 @@ void Level::draw(sf::RenderWindow &window) {
    	for (int row = 0; row < mapRows; row++) {
         for (int column = 0; column < mapColumns; column++) {
             if(level[row][column].getIsFound()){
-                if(level[row][column].getIsFlagged()){
-                    placeHolder = flag;
-                }else {
-                    switch(level[row][column].getNumBombs()){
+                switch(level[row][column].getNumBombs()){
                         case 0:
                             placeHolder = blank;
                             break;
@@ -103,16 +100,16 @@ void Level::draw(sf::RenderWindow &window) {
                         case 4:
                             placeHolder = four;
                     }
+                } else {
+                    if(level[row][column].getIsFlagged()) {
+                        placeHolder = flag;
+                    } else {
+                        placeHolder = hidden;
                 }
-            } else {
-                placeHolder = hidden;
             }
 
             sprite.setTextureRect(placeHolder);
             sprite.setPosition((row * TILE_WIDTH), (column * TILE_HEIGHT));
-            // Save coords for later
-            level[row][column].setCoords((row * TILE_WIDTH), (column * TILE_HEIGHT));
-
             window.draw(sprite);
         }
     }

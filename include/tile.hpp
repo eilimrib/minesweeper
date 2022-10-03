@@ -12,12 +12,9 @@ class Tile{
         inline void setFound() { found = true; }
         inline void addBombNear() { bombsNear++; }
         inline void addBomb() { isBomb = true; }
-        inline void setCoords(int x, int y) { coords.x = x; coords.y = y; }
     private:
         bool isBomb;
         bool found;
         bool flagged;
         int bombsNear;
-
-        sf::Vector2<int> coords;
 };

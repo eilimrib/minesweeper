@@ -9,7 +9,5 @@ Tile::Tile() {
     found = false;
     flagged = false;
     bombsNear = 0; 
-    coords.x = 0;
-    coords.y = 0;
 }
 

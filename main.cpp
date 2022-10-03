@@ -27,8 +27,8 @@ int main(){
                     break;
 
                 case sf::Event::MouseButtonReleased:
-                    pos.x = (event.mouseButton.x - event.mouseButton.x % TILE_WIDTH)/ COLUMNS;
-                    pos.y = (event.mouseButton.y - event.mouseButton.y % TILE_HEIGHT)/ ROWS;
+                    pos.x = (event.mouseButton.x - event.mouseButton.x % TILE_WIDTH)/ TILE_WIDTH;
+                    pos.y = (event.mouseButton.y - event.mouseButton.y % TILE_HEIGHT)/ TILE_HEIGHT;
                     if (event.mouseButton.button == sf::Mouse::Left) {
                         std::cout << "left pressed" << std::endl;
                         std::cout << "x: " << pos.x << " y: " << pos.y << std::endl;
@@ -38,7 +38,32 @@ int main(){
                             window.close();
                         } else {
                             std::cout << "Nothing here!!" << std::endl;
+                            std::cout << lvl[pos.x][pos.y].getNumBombs() << " bombs near!" << std::endl;
                             lvl[pos.x][pos.y].setFound();
+                            if(pos.x < ROWS){
+                                lvl[pos.x+1][pos.y].setFound();
+                            }
+                            if(pos.x-1 >= 0){
+                                lvl[pos.x-1][pos.y].setFound();
+                            }
+                            if(pos.y < COLUMNS){
+                                lvl[pos.x][pos.y+1].setFound();
+                            }
+                            if(pos.y-1 >=0){
+                                lvl[pos.x][pos.y-1].setFound();
+                            }
+                            if(pos.x < ROWS and pos.y < COLUMNS){
+                                lvl[pos.x+1][pos.y+1].setFound();
+                            }
+                            if(pos.x < ROWS and pos.y-1 >= 0){
+                                lvl[pos.x+1][pos.y-1].setFound();
+                            }
+                            if(pos.x-1 >= 0 and pos.y < COLUMNS){
+                                lvl[pos.x-1][pos.y+1].setFound();
+                            }
+                            if(pos.x-1 >=0 and pos.y-1 >= 0){
+                                lvl[pos.x-1][pos.y-1].setFound();
+                            }
                         }
                     }
                     window.clear();
